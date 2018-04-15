@@ -65,4 +65,9 @@ ZERO_CHECK.vcproj
 # vim stuff
 .vimrc
 
-# clsave/vol/fastload.tmp
+clsave/vol/fastload.tmp
+
+# Doxygen docs
+docs/html
+docs/latex
+docs/doxygen_sqlite3.db

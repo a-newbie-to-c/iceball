@@ -1,3 +1,8 @@
+-------------------------------------------
+-- @author Team Sparkle
+-- @brief This is an event library for lua.
+-------------------------------------------
+
 --[[
 Copyright (c) 2014 Team Sparkle
 
@@ -20,12 +25,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ]]
 
----
+
+
+
+-------------------------------------------
 -- Create a new event manager object.
 -- @return event_manager instance
 function event_manager()
 	local this = {}
-	
+
 	-- Lets have some room to breathe
 	this.ORDER_EARLIER = 0
 	this.ORDER_EARLY = 10
@@ -33,14 +41,14 @@ function event_manager()
 	this.ORDER_LATE = 30
 	this.ORDER_LATER = 40
 	this.ORDER_MONITOR = 100
-	
+
 	local handlers = {}
-	
+
 	local function sort_handlers(one, two)
 		return one.order < two.order
 	end
-	
-	---
+
+	-------------------------------------------
 	-- Register a new event handler.
 	-- @param event_type Event type name to be handled
 	-- @param handler Function with parameters (event_type, event_data)
@@ -49,11 +57,11 @@ function event_manager()
 	function this.register(event_type, handler, order, cancelled)
 		cancelled = cancelled or false
 		order = order or this.ORDER_DEFAULT
-		
+
 		if handlers[event_type] == nil then
 			handlers[event_type] = {}
 		end
-		
+
 		local event_handlers = handlers[event_type]
 		event_handlers[#event_handlers + 1] = {
 			handler = handler,
@@ -62,8 +70,8 @@ function event_manager()
 		}
 		table.sort(event_handlers, sort_handlers)
 	end
-	
-	---
+
+	-------------------------------------------
 	-- Deregister a previously registered handler.
 	-- @param event_type Event type name previously registered
 	-- @param handler Function previously registered
@@ -71,7 +79,7 @@ function event_manager()
 		if handlers[event_type] == nil then
 			return
 		end
-		
+
 		local event_handlers = handlers[event_type]
 		for i=#event_handlers,1,-1 do
 			if event_handlers[i].handler == handler then
@@ -80,8 +88,8 @@ function event_manager()
 		end
 		table.sort(event_handlers, sort_handlers)
 	end
-	
-	---
+
+	-------------------------------------------
 	-- Fire an event.
 	-- Event data can contain a "cancelled" attribute.
 	-- @param event_type Event type name to be handled
@@ -91,21 +99,21 @@ function event_manager()
 		if data.cancelled == nil then
 			data.cancelled = false
 		end
-		
+
 		local event_handlers = handlers[event_type]
-		
+
 		if event_handlers == nil then
 			return data
 		end
-		
+
 		for i, handler in ipairs(event_handlers) do
 			if handler.cancelled or not data.cancelled then
 				handler.handler(event_type, data)
 			end
 		end
-		
+
 		return data
 	end
-	
+
 	return this
 end

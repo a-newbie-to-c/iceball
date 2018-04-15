@@ -1,4 +1,7 @@
-![Iceball logo](https://raw.githubusercontent.com/iamgreaser/iceball/master/pkg/iceball/gfx/splash_logo.png)
+# ![Iceball logo](https://raw.githubusercontent.com/iamgreaser/iceball/master/pkg/iceball/gfx/splash_logo.png)
+
+===============
+
 [![Build Status](https://travis-ci.org/arsdragonfly/iceball.svg?branch=dev)](https://travis-ci.org/arsdragonfly/iceball)
 
 Iceball is both a highly-extensible engine on top of which people can do anything they want, and a game that builds upon the classic version of [Ace of Spades](http://en.wikipedia.org/wiki/Ace_of_Spades_(video_game)) experience.
@@ -27,6 +30,8 @@ You should also use the [issue tracker](https://github.com/iamgreaser/iceball/is
 # More info
 
 Check out the `docs/` directory for some in-depth information regarding formats, engine intrinsics etc. Be aware that not all documentation may be up to date however. A lot of this information is being ported to the [wiki](https://github.com/iamgreaser/iceball/wiki) to siphon out deprecated documentation.
+
+In addition, you may generate Doxygen Documentation using the `Doxyfile` config file provided. Note that docs for lua scripts require `doxylua`: `npm install -g doxylua`.
 
 # License
 
