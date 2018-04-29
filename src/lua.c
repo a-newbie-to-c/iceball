@@ -372,17 +372,36 @@ void icelua_loadbasefuncs(lua_State *L)
 	lua_pushcfunction(L, luaopen_table);
 	lua_call(L, 0, 0);
 
+	//fuck this, who cares
+	lua_pushcfunction(L, luaopen_package);
+	lua_call(L, 0, 0);
+
+	lua_pushcfunction(L, luaopen_debug);
+	lua_call(L, 0, 0);
+
+	lua_pushcfunction(L, luaopen_io);
+	lua_call(L, 0, 0);
 	// additional libraries
 	luaopen_bit(L);
 
 	// overwrite dofile/loadfile.
+	// WIP. TODO: add this back later?
+	/*
 	lua_pushcfunction(L, icelua_fn_base_loadfile);
 	lua_setglobal(L, "loadfile");
 	lua_pushcfunction(L, icelua_fn_base_dofile);
 	lua_setglobal(L, "dofile");
 	lua_pushcfunction(L, icelua_fn_base_require);
 	lua_setglobal(L, "require");
-	icelua_openpackage(L);
+	*/
+
+	//TODO: add this back later;
+	//icelua_openpackage(L);
+	//dirty trick instead
+	lua_getglobal(L, "package");
+	lua_pushstring(L, "pkg/?.lua;pkg/?/init.lua;pkg/vendor/?.lua;pkg/vendor/?/init.lua;pkg/vendor/lpeg/?.lua;?.lua");
+	lua_setfield(L, -2, "path");
+	lua_pop(L, -1);
 }
 
 int icelua_initfetch(void)
@@ -461,7 +480,7 @@ void icelua_pushversion(lua_State *L, const char *tabname)
 	lua_pushstring(L, vbuf);
 	lua_setfield(L, -2, "str");
 
-	lua_pushinteger(L, 
+	lua_pushinteger(L,
 		(((((((VERSION_W<<5) + VERSION_X
 		)<<7) + VERSION_Y
 		)<<5) + VERSION_A
@@ -501,7 +520,7 @@ int icelua_init(void)
 #ifndef DEDI
 		if(!json_load(Lc, "clsave/config.json"))
 		{
-			// set video stuff 
+			// set video stuff
 			lua_getfield(Lc, -1, "video");
 
 			lua_getfield(Lc, -1, "width");
@@ -617,7 +636,7 @@ int icelua_init(void)
 			// drop table
 			lua_pop(Lc, 1);
 
-			// set audio stuff 
+			// set audio stuff
 			lua_getfield(Lc, -1, "audio");
 
 			lua_getfield(Lc, -1, "freq");
@@ -643,7 +662,7 @@ int icelua_init(void)
 			// drop table
 			lua_pop(Lc, 1);
 
-			// set security stuff 
+			// set security stuff
 			lua_getfield(Lc, -1, "security");
 
 			lua_getfield(Lc, -1, "bin_storage_allowed");
@@ -855,4 +874,3 @@ void icelua_deinit(void)
 		lua_close(lstate_server);
 	// TODO!
 }
-

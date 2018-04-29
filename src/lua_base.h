@@ -18,23 +18,23 @@
 int icelua_fn_base_loadfile(lua_State *L)
 {
 	int top = icelua_assert_stack(L, 1, 1);
-	
+
 	const char *fname = lua_tostring(L, 1);
-	
+
 	if(L == lstate_server
 		? !path_type_server_readable(path_get_type(fname))
 		: !path_type_client_readable(path_get_type(fname)))
 	{
 		return luaL_error(L, "cannot read from there");
 	}
-	
+
 	lua_getglobal(L, "common");
 	lua_getfield(L, -1, "fetch_block");
 	lua_remove(L, -2);
 	lua_pushstring(L, "lua");
 	lua_pushvalue(L, 1);
 	lua_call(L, 2, 1);
-	
+
 	return 1;
 }
 
@@ -153,6 +153,8 @@ int icelua_fn_base_require(lua_State *L)
 	// loaded[mod_name] = module
 	lua_pushvalue(L, 3);  // Dupe value as setfield pops
 	lua_setfield(L, 2, mod_name);
+	printf("%s loaded\n", mod_name);
+	fflush(stdout);
 
 	// return module
 	return 1;
@@ -170,7 +172,7 @@ void icelua_openpackage(lua_State *L)
 	int key = 1;
 
 	// Note: Ensure you alter this value if adding/removing paths
-	lua_createtable(L, 5, 0);
+	lua_createtable(L, 6, 0);
 
 	// Most packages will be in pkg/
 	lua_pushinteger(L, key++);
@@ -188,6 +190,11 @@ void icelua_openpackage(lua_State *L)
 
 	lua_pushinteger(L, key++);
 	lua_pushstring(L, "pkg/vendor/?/init.lua");
+	lua_settable(L, -3);
+
+	//TODO: deal with this ugly stupid workaround
+	lua_pushinteger(L, key++);
+	lua_pushstring(L, "pkg/vendor/lpeg/?.lua");
 	lua_settable(L, -3);
 
 	// On the off-chance you wanted to load code from clsave/svsave or whatever

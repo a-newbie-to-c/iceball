@@ -1,6 +1,6 @@
 # ![Iceball logo](https://raw.githubusercontent.com/iamgreaser/iceball/master/pkg/iceball/gfx/splash_logo.png)
 
-===============
+----------------------------------
 
 [![Build Status](https://travis-ci.org/arsdragonfly/iceball.svg?branch=dev)](https://travis-ci.org/arsdragonfly/iceball)
 

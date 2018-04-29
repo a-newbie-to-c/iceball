@@ -30,6 +30,8 @@ AUTO_REFRESH_RATE = nil
 argv = {...}
 
 -- Connect to master server
+io.write("loading main client");
+io.flush();
 dofile("pkg/iceball/lib/http.lua")
 server_list = true
 latest_version = nil
@@ -51,6 +53,75 @@ function arg_closure(arg_array, offset)
 	end
 end
 
+-- see https://github.com/howl-editor/howl/blob/master/lib/howl/moonscript_support.lua
+--[[
+Copyright 2012 - 2015 Nils Nordman <nino at nordman.org>
+Copyright 2014 - 2015 Google, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+]]
+local lua_loadfile = loadfile
+local lua_pcall = pcall
+local moonscript = require('moonscript')
+local line_tables = require "moonscript.line_tables"
+moonscript.errors = require "moonscript.errors"
+_G.moon = require('moon')
+_G.loadfile = function(filename, mode, env)
+  filename = tostring(filename)
+  if (filename:match('%.moon$')) then
+    local status, ret = moonscript.loadfile(filename)
+    if not status then
+      return nil, filename .. ': ' .. ret
+    end
+    return status, ret
+  else
+    return lua_loadfile(filename, mode, env)
+  end
+end
+
+local function error_rewriter(err)
+  if type(err) ~= 'string' then return err end
+  if not err:match('%.moon') then return err end
+  local moon_file = err:match('^%[string "([^"]+%.moon)"%]')
+  if not moon_file then return err end
+
+  -- if the file hasn't been compiled yet we do it first for error rewriting to work
+  if not line_tables[moon_file] then
+    lua_pcall(moonscript.loadfile, moon_file)
+  end
+
+  local trace = debug.traceback("", 2)
+  trace = trace:match('%s*(.+)%s*$')
+  local rewritten = moonscript.errors.rewrite_traceback(trace, err)
+  return rewritten or err
+end
+
+_G.pcall = function(f, ...)
+  local rets = table.pack(xpcall(f, error_rewriter, ...))
+  return table.unpack(rets, 1, rets.n)
+end
+
+
+
+
+
+loadfile("pkg/iceball/launch/test.moon")()
 -- Some libraries
 dofile("pkg/iceball/lib/font.lua")
 dofile("pkg/base/lib_sdlkey.lua")
@@ -64,7 +135,7 @@ local function update_page_buttons()
 	if type(server_list) ~= "table" then
 		page = 0
 	end
-	
+
 	if page > 0 then
 		page_prev_active = true
 	else
@@ -157,7 +228,7 @@ function client.hook_render()
 	if not img_splash_width then
 		img_splash_width, img_splash_height = common.img_get_dims(img_splash)
 	end
-	
+
 	if splashtweenprogress_scale > 0.25 then
 		if splashtweenprogress_scale > 0.85 then
 			splashtweenprogress_scale = splashtweenprogress_scale - 0.001 --would be nice to do this with frame delta time
@@ -177,10 +248,10 @@ function client.hook_render()
 	splash_y = (screen_height/(2/splashtweenprogress_y)) - img_splash_height_scaled
 	client.img_blit(img_splash, splash_x, splash_y, img_splash_width_scaled, img_splash_height_scaled, 0, 0, 0xFFFFFFFF, splashtweenprogress_scale, splashtweenprogress_scale)
 	--splash sequence end
-	
+
 	if splashtweenprogress_scale <= 0.5 then --don't draw the rest until the splash finishes
-	
-	
+
+
 	font.render(text_offset, ch*0, "Press L for a local server on port 20737", 0xFFEEEEEE)
 	font.render(text_offset, ch*1, "Press Escape to quit", 0xFFEEEEEE)
 	font.render(text_offset, ch*2, "Press C to change your settings", 0xFFEEEEEE)
@@ -213,14 +284,14 @@ function client.hook_render()
 			version_string = "Up to date! ("..common.version.str..")"
 			version_colour = 0xFF86CF11
 		end
-		
+
 		font.render(
 			screen_width - font.string_width(version_string) - text_offset,
 			0,
 			version_string,
 			version_colour
 		)
-		
+
 		-- Draw server list
 		local empty_start = 10
 		for i=1,9 do
@@ -229,28 +300,28 @@ function client.hook_render()
 				empty_start = i
 				break
 			end
-			
+
 			local sv = server_list[sid]
-			
+
 			if sv.official then
 				-- TODO: Maybe make this a column or something? Could have columns for official and favourites
 				client.img_blit(img_row_official_bkg, text_offset-2, (ch+4)*(8+i-1) - 1)
 			else
 				client.img_blit(img_row_bkg, text_offset-2, (ch+4)*(8+i-1) - 1)
 			end
-		
+
 			font.render(text_offset, (ch+4)*(8+i-1), sid..": "..sv.name
 				.." - "..sv.players_current.."/"..sv.players_max
 				.." - "..sv.mode
 				.." - "..sv.map, 0xFFEEEEEE)
-			
+
 		end
 --		common.img_fill(img_row_bkg, 0x22111111)
 		for i=empty_start,9 do
 			client.img_blit(img_row_bkg_transparent, text_offset-2, (ch+4)*(8+i-1) - 1)
 		end
 		--common.img_fill(img_row_bkg, 0x99111111)
-		
+
 		-- Draw prev/next buttons
 		local button_pos_x = screen_width - text_offset - 2 - img_button_bkg_width
 		local button_pos_y = (ch+4)*17 - 1
@@ -279,7 +350,7 @@ function client.hook_render()
 			0xFFEEEEEE
 		)
 	end
-	
+
 	end
 end
 
@@ -304,7 +375,6 @@ function client.hook_tick(sec_current, sec_delta)
 	elseif AUTO_REFRESH_RATE and server_refresh + AUTO_REFRESH_RATE < sec_current then
 		master_http = http_new {url = MASTER_URL}
 	end
-	
+
 	return 0.01
 end
-
