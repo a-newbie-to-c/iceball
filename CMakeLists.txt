@@ -121,6 +121,7 @@ if (FREETYPE_FOUND)
 endif ()
 
 target_link_libraries(iceball
+	${CMAKE_DL_LIBS}
 	${ENet_LIBRARIES}
 	${ZLIB_LIBRARIES}
 	${sackit_LIBRARY}
@@ -133,7 +134,7 @@ set_target_properties(iceball PROPERTIES C_STANDARD 99)
 
 # iceball-dedi target
 add_executable(iceball-dedi EXCLUDE_FROM_ALL ${COMMON_FILES} ${PKG_FILES})
-target_link_libraries(iceball-dedi ${ENet_LIBRARIES} ${ZLIB_LIBRARIES} ${LUA_LIBRARIES} ${SDL_LIBRARY})
+target_link_libraries(iceball-dedi ${CMAKE_DL_LIBS} ${ENet_LIBRARIES} ${ZLIB_LIBRARIES} ${LUA_LIBRARIES} ${SDL_LIBRARY})
 set_target_properties(iceball-dedi PROPERTIES C_STANDARD 99)
 set_target_properties(iceball-dedi PROPERTIES COMPILE_DEFINITIONS "DEDI")
 
