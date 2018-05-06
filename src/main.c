@@ -1156,7 +1156,6 @@ cleanup:
 
 	if (boot_mode & IB_CLIENT) {
 		if (net_connect()
-				|| video_init()
 				|| wav_init()
 				|| render_init(screen_width, screen_height)) goto cleanup;
 	}
@@ -1167,7 +1166,6 @@ cleanup:
 	if (boot_mode & IB_CLIENT) {
 		render_deinit();
 		wav_deinit();
-		video_deinit();
 		net_disconnect();
 	}
 
@@ -1210,7 +1208,7 @@ int main(int argc, char *argv[])
 		free(args.basedir);
 		args.basedir = NULL;
 	}
-	
+
 	mod_basedir = args.basedir;
 
 #ifndef DEDI
@@ -1223,8 +1221,9 @@ int main(int argc, char *argv[])
 
 #ifndef DEDI
 cleanup:
-	if (boot_mode & IB_CLIENT)
+	if (boot_mode & IB_CLIENT) {
 		platform_deinit();
+	}
 #endif
 
 	fflush(stdout);

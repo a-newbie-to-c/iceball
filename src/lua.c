@@ -180,6 +180,10 @@ int icelua_fn_client_mk_set_title(lua_State *L)
 #include "lua_wav.h"
 #include "lua_va.h"
 
+#ifndef DEDI
+#include "lua_font.h"
+#endif
+
 // common functions
 
 // client functions
@@ -193,6 +197,11 @@ struct icelua_entry icelua_client[] = {
 	{icelua_fn_client_join_server, "join_server"},
 	{icelua_fn_client_mk_set_title, "mk_set_title"},
 
+	{icelua_fn_client_font_ttf_load, "font_ttf_load"},
+	{icelua_fn_client_font_ttf_lineheight, "font_ttf_lineheight"},
+	{icelua_fn_client_font_ttf_flush, "font_ttf_flush"},
+	{icelua_fn_client_font_ttf_draw, "font_ttf_draw"},
+	{icelua_fn_client_font_ttf_draw_glyph, "font_ttf_draw_glyph"},
 	{icelua_fn_client_text_input_start, "text_input_start"},
 	{icelua_fn_client_text_input_stop, "text_input_stop"},
 	{icelua_fn_client_mouse_lock_set, "mouse_lock_set"},
@@ -364,7 +373,7 @@ void icelua_loadbasefuncs(lua_State *L)
 	lua_pushcfunction(L, luaopen_base);
 	lua_call(L, 0, 0);
 
-	// here's the other three
+	// here's the other four
 	lua_pushcfunction(L, luaopen_string);
 	lua_call(L, 0, 0);
 	lua_pushcfunction(L, luaopen_math);
@@ -372,6 +381,8 @@ void icelua_loadbasefuncs(lua_State *L)
 	lua_pushcfunction(L, luaopen_table);
 	lua_call(L, 0, 0);
 
+	lua_pushcfunction(L, luaopen_utf8);
+	lua_call(L, 0, 0);
 	// additional libraries
 	luaopen_bit(L);
 
@@ -461,7 +472,7 @@ void icelua_pushversion(lua_State *L, const char *tabname)
 	lua_pushstring(L, vbuf);
 	lua_setfield(L, -2, "str");
 
-	lua_pushinteger(L, 
+	lua_pushinteger(L,
 		(((((((VERSION_W<<5) + VERSION_X
 		)<<7) + VERSION_Y
 		)<<5) + VERSION_A
@@ -501,7 +512,7 @@ int icelua_init(void)
 #ifndef DEDI
 		if(!json_load(Lc, "clsave/config.json"))
 		{
-			// set video stuff 
+			// set video stuff
 			lua_getfield(Lc, -1, "video");
 
 			lua_getfield(Lc, -1, "width");
@@ -617,7 +628,7 @@ int icelua_init(void)
 			// drop table
 			lua_pop(Lc, 1);
 
-			// set audio stuff 
+			// set audio stuff
 			lua_getfield(Lc, -1, "audio");
 
 			lua_getfield(Lc, -1, "freq");
@@ -643,7 +654,7 @@ int icelua_init(void)
 			// drop table
 			lua_pop(Lc, 1);
 
-			// set security stuff 
+			// set security stuff
 			lua_getfield(Lc, -1, "security");
 
 			lua_getfield(Lc, -1, "bin_storage_allowed");
@@ -855,4 +866,3 @@ void icelua_deinit(void)
 		lua_close(lstate_server);
 	// TODO!
 }
-
