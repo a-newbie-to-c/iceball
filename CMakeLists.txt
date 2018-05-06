@@ -129,6 +129,7 @@ target_link_libraries(iceball
 	${OPENGL_LIBRARIES}
 	${FREETYPE_LIBRARIES}
 )
+set_target_properties(iceball PROPERTIES C_STANDARD 99)
 
 # iceball-dedi target
 add_executable(iceball-dedi EXCLUDE_FROM_ALL ${COMMON_FILES} ${PKG_FILES})
