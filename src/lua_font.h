@@ -24,7 +24,7 @@ int icelua_fn_client_font_ttf_gc(lua_State *L)
 
 		font_free(fnt);
 	}
-
+	return 0;
 }
 
 int icelua_fn_client_font_ttf_load(lua_State *L)
