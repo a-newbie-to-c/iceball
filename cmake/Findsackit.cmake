@@ -29,9 +29,10 @@
 #     )
 #
 
-set(sackit_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/xlibinc/sackit)
-set(sackit_LIBRARY sackit)
 add_subdirectory(xlibinc/sackit)
+
+FIND_PATH(sackit_INCLUDE_DIRS sackit.h PATHS ${CMAKE_CURRENT_SOURCE_DIR}/xlibinc/sackit/)
+set(sackit_LIBRARY sackit)
 
 # handle the QUIETLY and REQUIRED arguments and set SACKIT_FOUND to TRUE if
 # all listed variables are TRUE
