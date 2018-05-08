@@ -1185,6 +1185,11 @@ cleanup:
 
 int main(int argc, char *argv[])
 {
+#ifdef WIN32
+	//Windows users need special care since they probably don't know >log.txt 2>&1
+	FILE * fd_stdout = freopen("stdout.txt", "wt", stdout);
+	FILE * fd_stderr = freopen("stderr.txt", "wt", stderr);
+#endif
 	struct cli_args args = {0};
 	int parse_status = parse_args(argc, argv, &args);
 
@@ -1210,7 +1215,7 @@ int main(int argc, char *argv[])
 		free(args.basedir);
 		args.basedir = NULL;
 	}
-	
+
 	mod_basedir = args.basedir;
 
 #ifndef DEDI
@@ -1229,6 +1234,11 @@ cleanup:
 
 	fflush(stdout);
 	fflush(stderr);
+
+#ifdef WIN32
+	fclose(fd_stdout);
+	fclose(fd_stderr);
+#endif
 
 	return 0;
 }
