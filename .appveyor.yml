@@ -1,0 +1,15 @@
+environment:
+  matrix:
+    - GENERATOR: "Visual Studio 17 Win64"
+      HUNTER: "ON"
+
+    - GENERATOR: "MinGW Makefiles"
+      HUNTER: "ON"
+
+    - GENERATOR: "MSYS Makefiles"
+      HUNTER: "OFF"
+
+build_script:
+  - cmake "-G%GENERATOR%" "-DHUNTER_ENABLED=%HUNTER%" .
+  - cmake --build . --target iceball
+  - cmake --build . --target iceball-dedi
