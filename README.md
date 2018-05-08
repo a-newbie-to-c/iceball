@@ -62,7 +62,12 @@ Run CMake and compile:
 
 ```
 $ cmake -G "MSYS Makefiles" . && make iceball
-# If you want to build the dedicated server executable, run make iceball-dedi
+```
+
+If you want to build the dedicated server executable, run
+
+```
+$ make iceball-dedi
 ```
 
 ### MinGW
@@ -71,17 +76,26 @@ Dependency management is done using Hunter;
 
 ```
 $ cmake -G "MinGW Makefiles" -DHUNTER_ENABLED=ON . && mingw32-make iceball
-# If you want to build the dedicated server executable, run make iceball-dedi
+```
+
+If you want to build the dedicated server executable, run
+
+```
+$ mingw32-make iceball-dedi
 ```
 
 ### MSVC
 
-Dependency management is done using Hunter;
+Dependency management is done using Hunter as well. Open up the VS command prompt and enter
 
 ```
 $ cmake -G "Visual Studio 15 2017 Win64" -DHUNTER_ENABLED=ON . && cmake --build . --target iceball
-# If you want to build the dedicated server executable,
-# run cmake --build . --target iceball-dedi
+```
+
+If you want to build the dedicated server executable, run
+
+```
+$ cmake --build . --target iceball-dedi
 ```
 
 ## OS X

@@ -1,16 +1,18 @@
 environment:
   matrix:
-    - GENERATOR: "Visual Studio 15 2017 Win64"
-      HUNTER: "ON"
-
-    - GENERATOR: "Visual Studio 14 2015 Win64"
-      HUNTER: "ON"
+    - GENERATOR: "MSYS Makefiles"
+      HUNTER: "OFF"
 
     - GENERATOR: "MinGW Makefiles"
       HUNTER: "ON"
 
-    - GENERATOR: "MSYS Makefiles"
-      HUNTER: "OFF"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      GENERATOR: "Visual Studio 15 2017 Win64"
+      HUNTER: "ON"
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      GENERATOR: "Visual Studio 14 2015 Win64"
+      HUNTER: "ON"
 
 build_script:
   - cmake "-G%GENERATOR%" "-DHUNTER_ENABLED=%HUNTER%" .
