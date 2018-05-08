@@ -61,7 +61,7 @@ $ pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-SDL2 mingw-w64-x86_64-luajit
 Run CMake and compile:
 
 ```
-cmake -G "MSYS Makefiles" . && make iceball
+$ cmake -G "MSYS Makefiles" . && make iceball
 # If you want to build the dedicated server executable, run make iceball-dedi
 ```
 
@@ -70,7 +70,7 @@ cmake -G "MSYS Makefiles" . && make iceball
 Dependency management is done using Hunter;
 
 ```
-cmake -G "MinGW Makefiles" -DHUNTER_ENABLED=ON . && mingw32-make iceball
+$ cmake -G "MinGW Makefiles" -DHUNTER_ENABLED=ON . && mingw32-make iceball
 # If you want to build the dedicated server executable, run make iceball-dedi
 ```
 
@@ -79,8 +79,9 @@ cmake -G "MinGW Makefiles" -DHUNTER_ENABLED=ON . && mingw32-make iceball
 Dependency management is done using Hunter;
 
 ```
-cmake -G "Visual Studio 15 2017 Win64" -DHUNTER_ENABLED=ON . && make iceball
-# If you want to build the dedicated server executable, run make iceball-dedi
+$ cmake -G "Visual Studio 15 2017 Win64" -DHUNTER_ENABLED=ON . && cmake --build . --target iceball
+# If you want to build the dedicated server executable,
+# run cmake --build . --target iceball-dedi
 ```
 
 ## OS X
