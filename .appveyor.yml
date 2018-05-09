@@ -31,8 +31,7 @@ before_build:
   - set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
   - set PATH=%PATH%;C:\MinGW\bin
   # Set up MSYS2
-  - |
-    if "%GENERATOR%" == "MSYS Makefiles" (
+  - if "%GENERATOR%" == "MSYS Makefiles" (
       set PATH=C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH%
       set PACMAN=pacman --noconfirm --noprogressbar
       bash -lc "%PACMAN% -Syu"
@@ -45,8 +44,7 @@ before_build:
     )
 
 build_script:
-  - |
-    if "%GENERATOR%" == "MSYS Makefiles" (
+  - if "%GENERATOR%" == "MSYS Makefiles" (
       bash -lc "%CMAKE_SCRIPT%"
     ) else (
       cmd /C "%CMAKE_SCRIPT"
