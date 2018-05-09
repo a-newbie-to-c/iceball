@@ -23,11 +23,7 @@ environment:
 
 before_build:
   # Stupid cmd always fails me!!!!!!!!!!
-  - ps: >
-    $env:CMAKE_SCRIPT =
-    "cmake -G "$env:GENERATOR" -DHUNTER_ENABLED=$env:HUNTER . &&
-    cmake --build . --target iceball &&
-    cmake --build . --target iceball-dedi";
+  - ps: $env:CMAKE_SCRIPT = "cmake -G "$env:GENERATOR" -DHUNTER_ENABLED=$env:HUNTER . && cmake --build . --target iceball && cmake --build . --target iceball-dedi";
 
   # Workaround for CMake complaining about sh.exe being in PATH
   - ps: $env:PATH = ($env:PATH.Split(";") | Where-Object { $_ -ne "C:\Program Files\Git\usr\bin" }) -join ";";
