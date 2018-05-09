@@ -5,6 +5,7 @@ environment:
 
     - GENERATOR: "MinGW Makefiles"
       HUNTER: "ON"
+      IGNORE_SH: "-DCMAKE_SH=\"CMAKE_SH-NOTFOUND\""
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       GENERATOR: "Visual Studio 15 2017 Win64"
@@ -15,6 +16,6 @@ environment:
       HUNTER: "ON"
 
 build_script:
-  - cmake "-G%GENERATOR%" "-DHUNTER_ENABLED=%HUNTER%" .
+  - cmake "-G%GENERATOR%" "-DHUNTER_ENABLED=%HUNTER%" "%IGNORE_SH%" .
   - cmake --build . --target iceball
   - cmake --build . --target iceball-dedi

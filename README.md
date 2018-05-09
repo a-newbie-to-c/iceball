@@ -12,7 +12,7 @@ This project [arsdragonfly/iceball](https://github.com/arsdragonfly/iceball) is 
 
 # Getting started
 
-Just want to play Iceball? You can grab the latest build from [loveudk.ddns.net](http://loveudk.ddns.net/iceball.zip). If you want to modify the source or just simply build Iceball yourself, see the [How to Build](#How-to-Build) section below, or alternatively check out the (now possibly outdated) [instructions](https://github.com/iamgreaser/iceball/wiki/Building) on the wiki.
+Just want to play Iceball? You can grab the latest build from [loveudk.ddns.net](http://loveudk.ddns.net/iceball.zip). If you want to modify the source or just simply build Iceball yourself, see the [How to Build](#how-to-build) section below, or alternatively check out the (now possibly outdated) [instructions](https://github.com/iamgreaser/iceball/wiki/Building) on the wiki.
 
 If you're planning on contributing to the Iceball project, please check out [contribution guidelines](https://github.com/iamgreaser/iceball/wiki/Helping-out) on the wiki as well. All help is appreciated!
 
@@ -75,7 +75,7 @@ $ make iceball-dedi
 Dependency management is done using Hunter;
 
 ```
-$ cmake -G "MinGW Makefiles" -DHUNTER_ENABLED=ON . && mingw32-make iceball
+$ cmake -G "MinGW Makefiles" -DHUNTER_ENABLED=ON -DCMAKE_SH="CMAKE_SH-NOTFOUND" . && mingw32-make iceball
 ```
 
 If you want to build the dedicated server executable, run
