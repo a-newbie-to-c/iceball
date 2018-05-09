@@ -28,13 +28,13 @@ environment:
 
 before_build:
   # Workaround for CMake complaining about sh.exe being in PATH
-  - set PATH="%PATH:C:\Program Files\Git\usr\bin;=%"
-  - set PATH="C:\MinGW\bin;%PATH%"
+  - setx PATH="%PATH:C:\Program Files\Git\usr\bin;=%"
+  - setx PATH="%PATH%;C:\MinGW\bin;"
   # Set up MSYS2
   - if "%GENERATOR%" == "MSYS Makefiles" (
-      set PATH="C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH%" &&
-      set PACMAN=pacman --noconfirm --noprogressbar &&
-      set MINGW_PACKAGE_PREFIX=mingw-w64-%MSYS2_ARCH%
+      setx PATH="C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH%" &&
+      setx PACMAN="pacman --noconfirm --noprogressbar" &&
+      setx MINGW_PACKAGE_PREFIX="mingw-w64-%MSYS2_ARCH%"
     )
   # Need seperate blocks for the environment variable to take effect
   - if "%GENERATOR%" == "MSYS Makefiles" (
