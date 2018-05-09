@@ -16,9 +16,9 @@ environment:
 
 before_build:
   # Workaround for CMake complaining about sh.exe being in PATH
-  - set PATH=%PATH:C:\Program Files (x86)\Git\bin;=%
+  - set PATH=%PATH:C:\Program Files\Git\bin;=%
   - set PATH=C:\MinGW\bin;%PATH%
-  
+
 build_script:
   - cmake "-G%GENERATOR%" "-DHUNTER_ENABLED=%HUNTER%" .
   - cmake --build . --target iceball
