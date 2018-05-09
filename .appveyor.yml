@@ -34,7 +34,9 @@ before_build:
   # Set up MSYS2
   - if "%GENERATOR%" == "MSYS Makefiles" (
       set PATH=C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH% &&
+      echo %PATH%
       set PACMAN=pacman --noconfirm --noprogressbar &&
+      echo %PATH%
       bash -lc "%PACMAN% -Syu" &&
       bash -lc "%PACMAN% -Su" &&
       set MINGW_PACKAGE_PREFIX=mingw-w64-%MSYS2_ARCH% &&
