@@ -43,7 +43,7 @@ before_build:
         bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-cmake";
         bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-SDL2";
         bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-luajit-git";
-        bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-en";
+        bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-enet";
       }
 
 build_script:
