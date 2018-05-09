@@ -15,7 +15,7 @@ set(CMAKE_SOURCE_DIR src)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-	add_definitions(-fno-strict-aliasing -Wall -Wextra -g) # keep debugging symbols even in Release builds
+	add_definitions(-fno-strict-aliasing -Wall -Wextra -Og) # keep debugging symbols even in Release builds
 endif ()
 
 include_directories(include)

@@ -52,10 +52,9 @@ cmake . && cmake --build .
 
 The Msys2 MinGW toolchain is recommended since it provides hassle-free dependency management.
 
-Grab the dependencies:
+Grab the dependencies (assuming running MSYS2 MinGW 64-bit shell; otherwise change x86_64 to i686)
 
 ```
-# Assuming running MSYS2 MinGW 64-bit shell
 $ pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-SDL2 mingw-w64-x86_64-luajit-git mingw-w64-x86_64-enet
 ```
 
