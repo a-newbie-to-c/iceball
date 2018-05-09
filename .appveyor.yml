@@ -48,7 +48,8 @@ build_script:
   - ps: |
       if ($env:GENERATOR -eq "MSYS Makefiles")
       {
-        bash -lc "cd $env:APPVEYOR_BUILD_FOLDER; $env:CMAKE_SCRIPT";
+        $env:BUILD_FOLDER = $env:APPVEYOR_BUILD_FOLDER -replace '\\', '\\\\';
+        bash -lc "cd $env:BUILD_FOLDER; $env:CMAKE_SCRIPT";
       } else {
         $env:CMAKE_SCRIPT = $env:CMAKE_SCRIPT -replace '\\', '';
         cmd.exe /c "$env:CMAKE_SCRIPT";
