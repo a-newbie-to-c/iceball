@@ -31,8 +31,13 @@ before_build:
   - set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
   - set PATH=%PATH%;C:\MinGW\bin;
   # Set up MSYS2
+  # Stupid cmd always fails me!
+  - ps: |
+      if ($env:GENERATOR -eq "MSYS Makefiles")
+      {
+        $env:path = "C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;$env:path";
+      }
   - if "%GENERATOR%" == "MSYS Makefiles" (
-      set PATH=C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH% &&
       set PACMAN=pacman --noconfirm --noprogressbar &&
       set MINGW_PACKAGE_PREFIX=mingw-w64-%MSYS2_ARCH%
     )
