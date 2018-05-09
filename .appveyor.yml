@@ -31,26 +31,20 @@ before_build:
   - set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
   - set PATH=%PATH%;C:\MinGW\bin;
   # Set up MSYS2
-  # Stupid cmd always fails me!
+  # Stupid cmd always fails me!!!!!!!!!!
   - ps: |
       if ($env:GENERATOR -eq "MSYS Makefiles")
       {
-        $env:path = "C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;$env:path";
+        $env:PATH = "C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;$env:PATH";
+        $env:PACMAN = "pacman --noconfirm --noprogressbar";
+        $env:MINGW_PACKAGE_PREFIX = "mingw-w64-$env:MSYS2_ARCH";
+        bash -lc "$env:PACMAN -Syu";
+        bash -lc "$env:PACMAN -Su";
+        bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-cmake";
+        bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-SDL2";
+        bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-luajit-git";
+        bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-en";
       }
-  - if "%GENERATOR%" == "MSYS Makefiles" (
-      set PACMAN=pacman --noconfirm --noprogressbar &&
-      set MINGW_PACKAGE_PREFIX=mingw-w64-%MSYS2_ARCH%
-    )
-
-  # Need seperate blocks for the environment variable to take effect
-  - if "%GENERATOR%" == "MSYS Makefiles" (
-      bash -lc "%PACMAN% -Syu" &&
-      bash -lc "%PACMAN% -Su" &&
-      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-cmake" &&
-      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-SDL2" &&
-      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-luajit-git" &&
-      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-enet"
-    )
 
 build_script:
     if "%GENERATOR%" == "MSYS Makefiles" (
