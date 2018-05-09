@@ -34,9 +34,12 @@ before_build:
   - if "%GENERATOR%" == "MSYS Makefiles" (
       set PATH="C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH%" &&
       set PACMAN=pacman --noconfirm --noprogressbar &&
+      set MINGW_PACKAGE_PREFIX=mingw-w64-%MSYS2_ARCH%
+    )
+  # Need seperate blocks for the environment variable to take effect
+  - if "%GENERATOR%" == "MSYS Makefiles" (
       bash -lc "%PACMAN% -Syu" &&
       bash -lc "%PACMAN% -Su" &&
-      set MINGW_PACKAGE_PREFIX=mingw-w64-%MSYS2_ARCH% &&
       bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-cmake" &&
       bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-SDL2" &&
       bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-luajit-git" &&
@@ -47,5 +50,5 @@ build_script:
     if "%GENERATOR%" == "MSYS Makefiles" (
       bash -lc "%CMAKE_SCRIPT%"
     ) else (
-      cmd /C "%CMAKE_SCRIPT"
+      cmd /C "%CMAKE_SCRIPT%"
     )
