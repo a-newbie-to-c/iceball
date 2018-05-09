@@ -32,19 +32,19 @@ before_build:
   - set PATH=%PATH%;C:\MinGW\bin
   # Set up MSYS2
   - if "%GENERATOR%" == "MSYS Makefiles" (
-      set PATH=C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH%
-      set PACMAN=pacman --noconfirm --noprogressbar
-      bash -lc "%PACMAN% -Syu"
-      bash -lc "%PACMAN% -Su"
-      set MINGW_PACKAGE_PREFIX=mingw-w64-%MSYS2_ARCH%
-      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-cmake"
-      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-SDL2"
-      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-luajit-git"
+      set PATH=C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH% &&
+      set PACMAN=pacman --noconfirm --noprogressbar &&
+      bash -lc "%PACMAN% -Syu" &&
+      bash -lc "%PACMAN% -Su" &&
+      set MINGW_PACKAGE_PREFIX=mingw-w64-%MSYS2_ARCH% &&
+      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-cmake" &&
+      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-SDL2" &&
+      bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-luajit-git" &&
       bash -lc "%PACMAN% -S %MINGW_PACKAGE_PREFIX%-enet"
     )
 
 build_script:
-  - if "%GENERATOR%" == "MSYS Makefiles" (
+    if "%GENERATOR%" == "MSYS Makefiles" (
       bash -lc "%CMAKE_SCRIPT%"
     ) else (
       cmd /C "%CMAKE_SCRIPT"
