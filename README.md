@@ -3,6 +3,7 @@
 ----------------
 
 [![Build Status](https://travis-ci.org/arsdragonfly/iceball.svg?branch=dev)](https://travis-ci.org/arsdragonfly/iceball)
+[![Build status](https://ci.appveyor.com/api/projects/status/pb4eg5y0jm95iftr?svg=true)](https://ci.appveyor.com/project/arsdragonfly/iceball)
 
 Iceball is a sandbox FPS shooter that is highly extensible and fun to play, offering experience much like the classic [Ace of Spades](http://en.wikipedia.org/wiki/Ace_of_Spades_(video_game)).
 
@@ -121,6 +122,7 @@ You should also use the [issue tracker](https://github.com/arsdragonfly/iceball/
 # More info
 
 Check out the `docs/` directory for some in-depth information regarding formats, engine intrinsics etc. Be aware that not all documentation may be up to date however. A lot of information is also available at the original [wiki](https://github.com/iamgreaser/iceball/wiki).
+The project is now switching to [Doxygen](http://www.doxygen.org/).
 
 # License
 
