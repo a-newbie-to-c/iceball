@@ -3,12 +3,12 @@ environment:
     - GENERATOR: "MSYS Makefiles"
       HUNTER: "OFF"
       MSYS2_ARCH: x86_64
-      MSYSTEM: mingw64
+      MSYSTEM: MINGW64
 
     - GENERATOR: "MSYS Makefiles"
       HUNTER: "OFF"
       MSYS2_ARCH: i686
-      MSYSTEM: mingw32
+      MSYSTEM: MINGW32
 
     - GENERATOR: "MinGW Makefiles"
       HUNTER: "ON"
@@ -50,5 +50,6 @@ build_script:
       {
         bash -c "$env:CMAKE_SCRIPT";
       } else {
+        $env:CMAKE_SCRIPT = $env:CMAKE_SCRIPT -replace '\\', '';
         cmd.exe /c "$env:CMAKE_SCRIPT";
       }
