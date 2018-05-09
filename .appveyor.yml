@@ -24,8 +24,8 @@ environment:
 before_build:
   # Stupid cmd always fails me!!!!!!!!!!
   - ps: >
-    $env:CMAKE_SCRIPT = "
-    cmake -G "$env:GENERATOR" -DHUNTER_ENABLED=$env:HUNTER . &&
+    $env:CMAKE_SCRIPT =
+    "cmake -G "$env:GENERATOR" -DHUNTER_ENABLED=$env:HUNTER . &&
     cmake --build . --target iceball &&
     cmake --build . --target iceball-dedi";
 
