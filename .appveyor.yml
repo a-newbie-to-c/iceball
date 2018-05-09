@@ -44,10 +44,11 @@ before_build:
       }
 
 build_script:
+  # cd "${0%/*}" ensures correct working directory
   - ps: |
       if ($env:GENERATOR -eq "MSYS Makefiles")
       {
-        bash -lc "$env:CMAKE_SCRIPT";
+        bash -c "$env:CMAKE_SCRIPT";
       } else {
         invoke-expression $env:CMAKE_SCRIPT;
       }
