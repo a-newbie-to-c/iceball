@@ -27,7 +27,7 @@ before_build:
 
   # Workaround for CMake complaining about sh.exe being in PATH
   - ps: $env:PATH = ($env:PATH.Split(";") | Where-Object { $_ -ne "C:\Program Files\Git\usr\bin" }) -join ";";
-  - ps: $env:PATH += "C:\MinGW\bin;";
+  - ps: $env:PATH = "C:\MinGW\bin;$env:PATH";
   # Set up MSYS2
   - ps: |
       if ($env:GENERATOR -eq "MSYS Makefiles")
@@ -48,7 +48,7 @@ build_script:
   - ps: |
       if ($env:GENERATOR -eq "MSYS Makefiles")
       {
-        bash -c "$env:CMAKE_SCRIPT";
+        bash -lc "cd $env:APPVEYOR_BUILD_FOLDER; $env:CMAKE_SCRIPT";
       } else {
         $env:CMAKE_SCRIPT = $env:CMAKE_SCRIPT -replace '\\', '';
         cmd.exe /c "$env:CMAKE_SCRIPT";
