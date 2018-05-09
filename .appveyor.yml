@@ -1,9 +1,4 @@
 environment:
-  CMAKE_SCRIPT: >
-    cmake "-G%GENERATOR%" "-DHUNTER_ENABLED=%HUNTER%" . &&
-    cmake --build . --target iceball &&
-    cmake --build . --target iceball-dedi
-
   matrix:
     - GENERATOR: "MSYS Makefiles"
       HUNTER: "OFF"
@@ -27,11 +22,17 @@ environment:
       HUNTER: "ON"
 
 before_build:
-  # Workaround for CMake complaining about sh.exe being in PATH
-  - set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
-  - set PATH=%PATH%;C:\MinGW\bin;
-  # Set up MSYS2
   # Stupid cmd always fails me!!!!!!!!!!
+  - ps: >
+    $env:CMAKE_SCRIPT = "
+    cmake -G "$env:GENERATOR" -DHUNTER_ENABLED=$env:HUNTER . &&
+    cmake --build . --target iceball &&
+    cmake --build . --target iceball-dedi";
+
+  # Workaround for CMake complaining about sh.exe being in PATH
+  - ps: $env:PATH = ($env:PATH.Split(";") | Where-Object { $_ -ne "C:\Program Files\Git\usr\bin" }) -join ";";
+  - ps: $env:PATH += "C:\MinGW\bin;";
+  # Set up MSYS2
   - ps: |
       if ($env:GENERATOR -eq "MSYS Makefiles")
       {
@@ -47,8 +48,10 @@ before_build:
       }
 
 build_script:
-    if "%GENERATOR%" == "MSYS Makefiles" (
-      bash -lc "%CMAKE_SCRIPT%"
-    ) else (
-      cmd /C "%CMAKE_SCRIPT%"
-    )
+  - ps: |
+      if ($env:GENERATOR -eq "MSYS Makefiles")
+      {
+        bash -lc "$env:CMAKE_SCRIPT";
+      } else {
+        invoke-expression $env:CMAKE_SCRIPT;
+      }
