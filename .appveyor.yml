@@ -29,7 +29,8 @@ environment:
 before_build:
   # Workaround for CMake complaining about sh.exe being in PATH
   - set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
-  - set PATH=%PATH%;C:\MinGW\bin
+  - set PATH=C:\MinGW\bin;%PATH%
+  - echo %PATH%
   # Set up MSYS2
   - if "%GENERATOR%" == "MSYS Makefiles" (
       set PATH=C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH% &&
