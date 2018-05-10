@@ -1,5 +1,8 @@
 environment:
   matrix:
+    - GENERATOR: "MinGW Makefiles"
+      HUNTER: "ON"
+
     - GENERATOR: "MSYS Makefiles"
       HUNTER: "OFF"
       MSYS2_ARCH: x86_64
@@ -9,9 +12,6 @@ environment:
       HUNTER: "OFF"
       MSYS2_ARCH: i686
       MSYSTEM: MINGW32
-
-    - GENERATOR: "MinGW Makefiles"
-      HUNTER: "ON"
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       GENERATOR: "Visual Studio 15 2017 Win64"
@@ -54,17 +54,15 @@ before_build:
 
 build_script:
   #We use cmd here so that && works
-  #Only check $LASTEXITCODE since stderr is full of warnings, causing execptions
+  #Redirect stderr to stdout so that PowerShell stops complaining about warnings
   - ps: |
       if ($env:GENERATOR -eq "MSYS Makefiles")
       {
         $env:BUILD_FOLDER = $env:APPVEYOR_BUILD_FOLDER -replace '\\', '\\\\';
-        bash -lc "cd $env:BUILD_FOLDER; $env:CMAKE_SCRIPT";
-        if ($LASTEXITCODE -eq 0) {Exit-AppVeyorBuild;}
+        bash -lc "cd $env:BUILD_FOLDER; $env:CMAKE_SCRIPT 2>&1";
       } else {
         $env:CMAKE_SCRIPT = $env:CMAKE_SCRIPT -replace '\\', '';
-        cmd.exe /c "$env:CMAKE_SCRIPT";
-        if ($LASTEXITCODE -eq 0) {Exit-AppVeyorBuild;}
+        cmd.exe /c "$env:CMAKE_SCRIPT 2>&1";
       }
 
 after_build:
