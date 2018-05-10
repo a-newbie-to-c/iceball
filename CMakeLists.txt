@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.0)
 # "MSYS2 and *nix are first class citizens." the holy arsdragonfly decided.
 option(HUNTER_ENABLED "Enable Hunter to grab dependencies on Windows for mingw32-make and MSVC" OFF)
 SET(HUNTER_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/hunter")
+SET(HUNTER_CONFIGURATION_TYPES Debug)
 include("cmake/HunterGate.cmake")
 HunterGate(
 	URL "https://github.com/ruslo/hunter/archive/v0.20.70.tar.gz"

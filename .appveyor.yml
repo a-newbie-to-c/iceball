@@ -29,12 +29,21 @@ before_build:
   - ps: $env:PATH = ($env:PATH.Split(";") | Where-Object { $_ -ne "C:\Program Files\Git\usr\bin" }) -join ";";
   - ps: $env:PATH = "C:\MinGW\bin;$env:PATH";
   # Set up MSYS2
+  # Unused toolchains are removed to speed up update.
   - ps: |
       if ($env:GENERATOR -eq "MSYS Makefiles")
       {
         $env:PATH = "C:\msys64\$env:MSYSTEM\bin;C:\msys64\usr\bin;$env:PATH";
         $env:PACMAN = "pacman --noconfirm --noprogressbar";
         $env:MINGW_PACKAGE_PREFIX = "mingw-w64-$env:MSYS2_ARCH";
+        if ($env:MSYS2_ARCH -eq "x86_64")
+        {
+          bash -lc "$env:PACMAN -Rs mingw-w64-i686-toolchain";
+        }
+        if ($env:MSYS2_ARCH -eq "i686")
+        {
+          bash -lc "$env:PACMAN -Rs mingw-w64-x86_64-toolchain";
+        }
         bash -lc "$env:PACMAN -Syu";
         bash -lc "$env:PACMAN -Su";
         bash -lc "$env:PACMAN -S $env:MINGW_PACKAGE_PREFIX-cmake";
@@ -56,4 +65,13 @@ build_script:
         $env:CMAKE_SCRIPT = $env:CMAKE_SCRIPT -replace '\\', '';
         cmd.exe /c "$env:CMAKE_SCRIPT";
         if ($LASTEXITCODE -eq 0) {Exit-AppVeyorBuild;}
+      }
+
+after_build:
+  -ps: |
+      if ($env:GENERATOR -eq "MinGW Makefiles")
+      {
+        $env:ICEBALL_ZIP_FILENAME = "iceball-$env:APPVEYOR_REPO_COMMIT-$env:APPVEYOR_REPO_COMMIT_TIMESTAMP.zip";
+        7z a $env:ICEBALL_ZIP_FILENAME @listfile.txt;
+        Push-AppveyorArtifact $env:ICEBALL_ZIP_FILENAME;
       }
