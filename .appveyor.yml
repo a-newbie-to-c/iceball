@@ -55,7 +55,7 @@ before_build:
 build_script:
   #Use a seperate script file so that warnings on stderr won't fail the build
   - powershell .\appveyor_build.ps1
-  -ps: |
+  - ps: |
       if ($env:GENERATOR -eq "MinGW Makefiles")
       {
         $env:ICEBALL_ZIP_FILENAME = "iceball-$env:APPVEYOR_REPO_COMMIT-$env:APPVEYOR_REPO_COMMIT_TIMESTAMP.zip";
