@@ -53,17 +53,8 @@ before_build:
       }
 
 build_script:
-  #We use cmd here so that && works
-  #Redirect stderr to stdout so that PowerShell stops complaining about warnings
-  - ps: |
-      if ($env:GENERATOR -eq "MSYS Makefiles")
-      {
-        $env:BUILD_FOLDER = $env:APPVEYOR_BUILD_FOLDER -replace '\\', '\\\\';
-        bash -lc "cd $env:BUILD_FOLDER; $env:CMAKE_SCRIPT 2>&1";
-      } else {
-        $env:CMAKE_SCRIPT = $env:CMAKE_SCRIPT -replace '\\', '';
-        cmd.exe /c "$env:CMAKE_SCRIPT 2>&1";
-      }
+  #Use a seperate script file so that warnings on stderr won't fail the build
+  - powershell appveyor_build.ps1
 
 after_build:
   -ps: |
