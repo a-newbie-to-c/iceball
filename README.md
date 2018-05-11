@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/arsdragonfly/iceball.svg?branch=dev)](https://travis-ci.org/arsdragonfly/iceball)
 [![Build status](https://ci.appveyor.com/api/projects/status/pb4eg5y0jm95iftr?svg=true)](https://ci.appveyor.com/project/arsdragonfly/iceball)
 
-Iceball is a sandbox FPS shooter that is highly extensible and fun to play, offering experience much like the classic [Ace of Spades](http://en.wikipedia.org/wiki/Ace_of_Spades_(video_game)).
+Iceball is a lightweight sandbox FPS shooter that is highly extensible and fun to play, offering experience much like the classic [Ace of Spades](http://en.wikipedia.org/wiki/Ace_of_Spades_(video_game)).
 
 This project [arsdragonfly/iceball](https://github.com/arsdragonfly/iceball) is the successor to the original [iamgreaser/iceball](https://github.com/iamgreaser/iceball) codebase, which is virtually discontinued by now.
 
