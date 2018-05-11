@@ -62,3 +62,13 @@ build_script:
         7z a $env:ICEBALL_ZIP_FILENAME `@listfile.txt;
         Push-AppveyorArtifact $env:ICEBALL_ZIP_FILENAME;
       }
+
+deploy:
+  release: iceball-$(APPVEYOR_REPO_BRANCH)-$(APPVEYOR_REPO_COMMIT_TIMESTAMP)
+  description: $(APPVEYOR_REPO_COMMIT)
+  provider: GitHub
+  auth_token:
+    secure: tMJF/Nc5vz1iNTuX94v3fdoToy+RDykn8cfehVok1el8s2ZgD9GSi/fLfbVsSv5M
+    artifact: '*.zip'
+  on:
+    appveyor_repo_tag: true
