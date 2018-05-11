@@ -58,7 +58,7 @@ build_script:
   - ps: |
       if ($env:GENERATOR -eq "MinGW Makefiles")
       {
-        $env:ICEBALL_ZIP_FILENAME = "iceball-$env:APPVEYOR_REPO_COMMIT-$env:APPVEYOR_REPO_COMMIT_TIMESTAMP.zip";
+        $env:ICEBALL_ZIP_FILENAME = "iceball-$env:APPVEYOR_REPO_COMMIT.zip";
         7z a $env:ICEBALL_ZIP_FILENAME `@listfile.txt;
         Push-AppveyorArtifact $env:ICEBALL_ZIP_FILENAME;
       }
