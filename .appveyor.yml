@@ -72,3 +72,4 @@ deploy:
     artifact: '*.zip'
   on:
     appveyor_repo_tag: true
+    force_update: true
