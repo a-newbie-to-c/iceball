@@ -129,6 +129,7 @@ The project is now switching to [Doxygen](http://www.doxygen.org/).
     Iceball is licensed under the regular GNU GPL version 3.
     Ice Lua Components is licensed under the LGPL version 3.
     Any of the "Team Sparkle" stuff is available under MIT, including the launcher.
+    Sackit is under public domain.
     All assets are released under Creative Commons 3.0 BY-SA:
       http://creativecommons.org/licenses/by-sa/3.0/
 
